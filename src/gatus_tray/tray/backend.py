@@ -105,7 +105,13 @@ class AyatanaTray(TrayBackend):
                     if endpoint.response_time_ms is not None
                     else ""
                 )
-                item = self._gtk.MenuItem(label=f"{endpoint.name}: {health}{timing}")
+                icon_name = "emblem-ok" if endpoint.success else "dialog-error"
+                icon = self._gtk.Image.new_from_icon_name(
+                    icon_name, self._gtk.IconSize.MENU
+                )
+                item = self._gtk.ImageMenuItem(label=f"{endpoint.name}: {health}{timing}")
+                item.set_image(icon)
+                item.set_always_show_image(True)
                 item.set_sensitive(False)
                 menu.append(item)
         else:
