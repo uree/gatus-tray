@@ -89,7 +89,13 @@ class AyatanaTray(TrayBackend):
 
     def _rebuild_menu(self):
         menu = self._gtk.Menu()
-        status = self._gtk.MenuItem(label=f"Gatus: {self._state.value}")
+        status = self._gtk.ImageMenuItem(label="Gatus")
+        gatus_icon_name = "emblem-ok" if self._state.value == "up" else "process-stop"  # emblem-danger, process-stop
+        gatus_icon = self._gtk.Image.new_from_icon_name(
+            gatus_icon_name, self._gtk.IconSize.MENU
+        )
+        status.set_image(gatus_icon)
+        status.set_always_show_image(True)
         status.set_sensitive(False)
         menu.append(status)
         menu.append(self._gtk.SeparatorMenuItem())
@@ -99,17 +105,11 @@ class AyatanaTray(TrayBackend):
             menu.append(error)
         elif self._endpoints:
             for endpoint in self._endpoints:
-                health = "UP" if endpoint.success else "DOWN"
-                timing = (
-                    f" — {endpoint.response_time_ms:.1f} ms"
-                    if endpoint.response_time_ms is not None
-                    else ""
-                )
-                icon_name = "emblem-ok" if endpoint.success else "dialog-error"
+                icon_name = "emblem-ok" if endpoint.success else "process-stop"
                 icon = self._gtk.Image.new_from_icon_name(
                     icon_name, self._gtk.IconSize.MENU
                 )
-                item = self._gtk.ImageMenuItem(label=f"{endpoint.name}: {health}{timing}")
+                item = self._gtk.ImageMenuItem(label=f"{endpoint.name}")
                 item.set_image(icon)
                 item.set_always_show_image(True)
                 item.set_sensitive(False)
