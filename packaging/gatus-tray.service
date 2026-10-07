@@ -1,0 +1,12 @@
+[Unit]
+Description=Gatus Tray Monitor
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/gatus-tray
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target

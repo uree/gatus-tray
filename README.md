@@ -38,3 +38,29 @@ notifications_enabled = true
 Run tests with `python -m pip install -e '.[test]' && python -m pytest`. Set `GATUS_TRAY_LOG_LEVEL=DEBUG` for diagnostics.
 
 This is an initial proof of concept: settings UI, multiple configured instances, autostart installation, and a polished custom icon are not implemented. The indicator uses Ubuntu's Ayatana AppIndicator StatusNotifier integration; GNOME may require the AppIndicator/KStatusNotifierItem Support extension to display it in the top bar. Notifications use `notify-send`, supplied by `libnotify-bin`.
+
+
+# Run as service
+
+Put something like this in `~/.config/systemd/user/gatus-tray.service`.
+
+[Unit]
+Description=Gatus Tray Monitor
+After=graphical-session.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/path-to-gatus-tray/gatus-tray
+ExecStart=%h/path-to-gatus-tray/gatus-tray/.venv/bin/python -m gatus_tray
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=graphical-session.target
+
+Then
+
+```
+systemctl --user daemon-reload
+systemctl --user enable --now gatus-tray.service
+```
