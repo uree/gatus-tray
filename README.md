@@ -1,32 +1,24 @@
 # gatus-tray
 
-A small Linux desktop tray monitor for Gatus. It polls Gatus' status API and reports endpoint health without talking to monitored websites directly.
+A small Linux desktop tray monitor for Gatus. Displays which sites are up/down in the tray. Also sends notifications if any of them are unavailable.
 
-## Supported environment
+Tested on ubuntu with GNOME and Python 3.12+. The indicator uses the StatusNotifier/AppIndicator protocol through Ayatana when the system bindings are installed. Vanilla GNOME may also require the AppIndicator/KStatusNotifierItem Support extension.
 
-Ubuntu with GNOME and Python 3.12+. The indicator uses the StatusNotifier/AppIndicator protocol through Ayatana when the system bindings are installed. Vanilla GNOME may also require the AppIndicator/KStatusNotifierItem Support extension.
+**Disclaimer**: This app was vibe coded in a couple of hours with Codex Luna Light.
 
-## Install system dependencies
+## Install and configure Gatus
 
-```sh
-sudo apt update
-sudo apt install python3.12 python3.12-venv python3-gi gir1.2-gtk-3.0 \
-  gir1.2-ayatanaappindicator3-0.1 libayatana-appindicator3-1 \
-  libnotify-bin gnome-shell-extension-appindicator
+```
+docker run -d \
+  -p 8050:8080 \
+  --mount type=bind,source="$(pwd)"/config.yaml,target=/config/config.yaml \
+  --name gatus \
+  ghcr.io/twin/gatus:stable
 ```
 
-Enable the extension in GNOME Extensions if it is not already enabled, then log out and in if necessary.
+## Configuration (for manual and package)
 
-```sh
-python3.12 -m venv .venv
-. .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
-python -m gatus_tray
-# or: gatus-tray
-```
-
-Configuration is read from `~/.config/gatus-tray/config.toml`; a default is used when it does not exist. Example:
+Configuration is read from `~/.config/gatus-tray/config.toml`. A default is used when it does not exist:
 
 ```toml
 backend = "gatus"
@@ -35,12 +27,35 @@ poll_interval = 30
 notifications_enabled = true
 ```
 
+## Install deb package
+
+Download `.deb` file from releases & run `sudo apt install ./package.deb`. Boink.
+
+## Manual install 
+
+Install system dependencies.
+
+```sh
+sudo apt update
+sudo apt install python3-gi gir1.2-gtk-3.0 \
+  gir1.2-ayatanaappindicator3-0.1 libayatana-appindicator3-1 \
+  libnotify-bin gnome-shell-extension-appindicator
+```
+
+Set up venv and run.
+
+```sh
+python3.12 -m venv .venv
+. .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e .
+python -m gatus_tray
+```
+
 Run tests with `python -m pip install -e '.[test]' && python -m pytest`. Set `GATUS_TRAY_LOG_LEVEL=DEBUG` for diagnostics.
 
-This is an initial proof of concept: settings UI, multiple configured instances, autostart installation, and a polished custom icon are not implemented. The indicator uses Ubuntu's Ayatana AppIndicator StatusNotifier integration; GNOME may require the AppIndicator/KStatusNotifierItem Support extension to display it in the top bar. Notifications use `notify-send`, supplied by `libnotify-bin`.
 
-
-# Run as service
+Set up systemd. 
 
 Put something like this in `~/.config/systemd/user/gatus-tray.service`.
 
@@ -64,3 +79,4 @@ Then
 systemctl --user daemon-reload
 systemctl --user enable --now gatus-tray.service
 ```
+
