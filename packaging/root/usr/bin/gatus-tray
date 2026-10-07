@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-exec /usr/lib/gatus-tray/venv/bin/python -m gatus_tray "$@"
