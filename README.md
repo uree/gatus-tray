@@ -62,8 +62,7 @@ python -m pip install -e .
 python -m gatus_tray
 ```
 
-Run tests with `python -m pip install -e '.[test]' && python -m pytest`. Set `GATUS_TRAY_LOG_LEVEL=DEBUG` for diagnostics.
-
+Run tests with `python -m pytest`.
 
 Set up systemd. 
 
