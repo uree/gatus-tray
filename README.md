@@ -1,10 +1,20 @@
 # gatus-tray
 
-A small Linux desktop tray monitor for Gatus. Displays which sites are up/down in the tray. Also sends notifications if any of them are unavailable.
+A small Linux desktop tray monitor for Gatus. Displays which sites are up/down in the tray. 
 
-Tested on ubuntu with GNOME and Python 3.12+. The indicator uses the StatusNotifier/AppIndicator protocol through Ayatana when the system bindings are installed. Vanilla GNOME may also require the AppIndicator/KStatusNotifierItem Support extension.
+<p>
+  <img src="status-green.png" width="25%" alt="Interface demo all ok." />
+  <img src="status-red.png" width="25%" alt="Interface demo failure."/>
+</p>
+
+Triggers system notifications on status change.
+
+Tested on Ubuntu 24.04 with GNOME and Python 3.12+. 
+
+The indicator uses the StatusNotifier/AppIndicator protocol through Ayatana when the system bindings are installed. Vanilla GNOME may also require the AppIndicator/KStatusNotifierItem Support extension.
 
 **Disclaimer**: This app was vibe coded in a couple of hours with Codex Luna Light.
+
 
 ## Install and configure Gatus
 
