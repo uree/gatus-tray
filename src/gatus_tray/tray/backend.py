@@ -90,7 +90,7 @@ class AyatanaTray(TrayBackend):
     def _rebuild_menu(self):
         menu = self._gtk.Menu()
         status = self._gtk.ImageMenuItem(label="Gatus")
-        gatus_icon_name = "emblem-ok" if self._state.value == "up" else "process-stop"  # emblem-danger, process-stop
+        gatus_icon_name = "process-stop" if self._error else "emblem-ok"
         gatus_icon = self._gtk.Image.new_from_icon_name(
             gatus_icon_name, self._gtk.IconSize.MENU
         )
