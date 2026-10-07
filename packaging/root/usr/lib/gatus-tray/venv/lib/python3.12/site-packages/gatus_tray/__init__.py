@@ -1,0 +1,2 @@
+"""Gatus tray monitor."""
+
