@@ -68,6 +68,7 @@ Set up systemd.
 
 Put something like this in `~/.config/systemd/user/gatus-tray.service`.
 
+```service
 [Unit]
 Description=Gatus Tray Monitor
 After=graphical-session.target
@@ -81,6 +82,7 @@ RestartSec=5
 
 [Install]
 WantedBy=graphical-session.target
+```
 
 Then
 
